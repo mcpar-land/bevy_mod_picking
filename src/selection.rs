@@ -53,25 +53,26 @@ pub fn mesh_selection(
         }
     }
 
-    if keyboard_input.pressed(KeyCode::LControl) && keyboard_input.pressed(KeyCode::A) {
+    if keyboard_input.pressed(KeyCode::LShift) && keyboard_input.pressed(KeyCode::A) {
         // The user has hit ctrl+a, select all the things!
-        for (mut selection, _interaction) in &mut query_all.iter_mut() {
-            if !selection.selected {
-                selection.selected = true;
-            }
-        }
+        // Actually, disable this
+        // for (mut selection, _interaction) in &mut query_all.iter_mut() {
+        //     if !selection.selected {
+        //         selection.selected = true;
+        //     }
+        // }
     } else if new_selection {
         // Some pickable mesh has been clicked on - figure out what to select or deselect
         for (mut selection, interaction) in &mut query_all.iter_mut() {
             if selection.selected
                 && *interaction != Interaction::Clicked
-                && !keyboard_input.pressed(KeyCode::LControl)
+                && !keyboard_input.pressed(KeyCode::LShift)
             {
                 // In this case, the entity is currently marked as selected, but it was not clicked
                 // on (interaction), and lctrl was not being held, so it should be deselected.
                 selection.selected = false;
             } else if *interaction == Interaction::Clicked
-                && keyboard_input.pressed(KeyCode::LControl)
+                && keyboard_input.pressed(KeyCode::LShift)
             {
                 selection.selected = !selection.selected
             } else if !selection.selected && *interaction == Interaction::Clicked {
@@ -84,13 +85,13 @@ pub fn mesh_selection(
         let mut ui_not_clicked = true;
         for interaction in node_query.iter() {
             // Check if anything in the UI is being interacted with
-            if *interaction == Interaction::Clicked && !keyboard_input.pressed(KeyCode::LControl) {
+            if *interaction == Interaction::Clicked && !keyboard_input.pressed(KeyCode::LShift) {
                 ui_not_clicked = false;
             }
         }
         let mut no_deselect_not_clicked = true;
         for interaction in no_deselect_query.iter() {
-            if *interaction == Interaction::Clicked && !keyboard_input.pressed(KeyCode::LControl) {
+            if *interaction == Interaction::Clicked && !keyboard_input.pressed(KeyCode::LShift) {
                 no_deselect_not_clicked = false;
             }
         }
